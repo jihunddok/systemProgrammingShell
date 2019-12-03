@@ -78,7 +78,61 @@ static COMMAND builtin_cmds[] = // costomized commands which unsupplied commands
     { "quit", "quit this shell", cmd_exit },
 
 };
+void mapsosa(){
+    /*   int line_count = 0;
+         char buffer[20000];
+         FILE *p_file = fopen("mapsosa.txt","r");
 
+         while(fread(buffer,20000,p_file)!=NULL){
+         line_count++;
+         printf("%s",line_count,buffer);
+
+         }         
+         fclose(p_file);
+         printf("\n\n");*/
+    int state; //종료료제대로됬는지확인변수
+
+    char buf[10000];
+
+    int i;
+
+
+
+
+    FILE *fp=fopen("mapsosa.txt", "rt");
+
+    if(fp==NULL){
+
+        printf("not open");
+
+        return 1;
+
+    }
+
+
+
+    for(i=0; i<45; i++){
+
+        if(fgets(buf, sizeof(buf), fp)==NULL) break;
+
+        printf("%s",buf);
+
+    }
+    printf("\n\n");
+
+
+
+
+    state = fclose(fp);
+
+    if(state!=0){
+
+        printf("not close");
+
+        return 1;
+
+    }
+}
 
 
 
@@ -87,6 +141,7 @@ int main(int argc, char**argv)
     int i;
     sigset_t set;
 
+    mapsosa();
     sigfillset(&set);
     sigdelset(&set,SIGCHLD);
     sigprocmask(SIG_SETMASK,&set,NULL);
@@ -113,7 +168,7 @@ void zombie_handler(int signo)
 
     while ((pid = waitpid(-1, &stat, WNOHANG)) > 0)
         printf("child %d terminated normaly\n", pid) ;
-    }// shut down child process dosent have parant process
+}// shut down child process dosent have parant process
 
 void fatal(char *str)
 {
@@ -278,7 +333,7 @@ void execute_cmdline(char* cmdline)
 
 }
 int SetSignal(struct sigaction *def, sigset_t *mask, void(*handler)(int)) { //시그널 설정
-// set signal to use ctrl + c / ctrl +z
+    // set signal to use ctrl + c / ctrl +z
     struct sigaction catch;
 
 
